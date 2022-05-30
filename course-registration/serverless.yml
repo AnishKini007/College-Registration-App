@@ -29,53 +29,59 @@ provider:
 
 functions:
   create:
-    handler: Student/create.create
+    handler: Modules/Student/create.create
     events:
       - httpApi:
           path: /
           method: post
 
   get:
-    handler: Student/get.get
+    handler: Modules/Student/get.get
     events: 
       - httpApi:
           path: /
           method: get
 
   CreateCourse:
-    handler: Course/CreateCourse.CreateCourse
+    handler: Modules/Course/CreateCourse.CreateCourse
     events:
       - httpApi:
           path: /course
           method: post
 
   GetCourse:
-    handler: Course/GetCourse.GetCourse
+    handler: Modules/Course/GetCourse.GetCourse
     events:
       - httpApi:
           path: /course
           method: get
 
   Drop:
-    handler: Course/Drop.Drop
+    handler: Modules/Course/Drop.Drop
     events:
       - httpApi:
           path: /course
           method: delete
 
   AccCreate:
-    handler: Account/AccCreate.AccCreate
+    handler: Account.AccCreate
     events:
       - httpApi:
           path: /account
-          method: post        
+          method: post  
+      - httpApi:
+          path: /account
+          method: patch  
+      - httpApi:
+          path: /account
+          method: put    
 
-  updateaccount:
-    handler: Account/updateaccount.update
-    events:
-      - httpApi:
-          path: /account
-          method: patch
+  # updateaccount:
+  #   handler: Account/updateaccount.update
+  #   events:
+  #     - httpApi:
+  #         path: /account
+  #         method: patch
 resources:
   Resources:
     StudentTable:
