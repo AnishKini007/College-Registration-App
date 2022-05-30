@@ -1,0 +1,112 @@
+org: anishkini
+app: college-registration-app
+service: course-registration
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Action:
+            - "dynamodb:PutItem"
+            - "dynamodb:Get*"
+            - "dynamodb:Scan*"
+            - "dynamodb:UpdateItem"
+            - "dynamodb:DeleteItem"
+            
+          Resource: 
+            - { "Fn::GetAtt": ["StudentTable", "Arn"]}
+            - { "Fn::GetAtt": ["CourseTable", "Arn"]}
+            - { "Fn::GetAtt": ["AccountTable", "Arn"]}
+
+  environment:
+    DYNAMODB_STUDENT_TABLE: { "Ref": "StudentTable" }
+    DYNAMODB_COURSE_TABLE:  { "Ref": "CourseTable" }
+    DYNAMODB_ACCOUNT_TABLE: { "Ref": "AccountTable"}
+
+functions:
+  create:
+    handler: Student/create.create
+    events:
+      - httpApi:
+          path: /
+          method: post
+
+  get:
+    handler: Student/get.get
+    events: 
+      - httpApi:
+          path: /
+          method: get
+
+  CreateCourse:
+    handler: Course/CreateCourse.CreateCourse
+    events:
+      - httpApi:
+          path: /course
+          method: post
+
+  GetCourse:
+    handler: Course/GetCourse.GetCourse
+    events:
+      - httpApi:
+          path: /course
+          method: get
+
+  Drop:
+    handler: Course/Drop.Drop
+    events:
+      - httpApi:
+          path: /course
+          method: delete
+
+  AccCreate:
+    handler: Account/AccCreate.AccCreate
+    events:
+      - httpApi:
+          path: /account
+          method: post        
+
+  updateaccount:
+    handler: Account/updateaccount.update
+    events:
+      - httpApi:
+          path: /account
+          method: patch
+resources:
+  Resources:
+    StudentTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: StudentID
+            AttributeType: S
+        BillingMode: PAY_PER_REQUEST
+        KeySchema:
+          - AttributeName: StudentID
+            KeyType: HASH
+
+    CourseTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: CourseCode
+            AttributeType: S
+        BillingMode: PAY_PER_REQUEST
+        KeySchema:
+          - AttributeName: CourseCode
+            KeyType: HASH
+
+    AccountTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: StudentID
+            AttributeType: S
+        BillingMode: PAY_PER_REQUEST
+        KeySchema:
+          - AttributeName: StudentID
+            KeyType: HASH
