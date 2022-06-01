@@ -11,11 +11,13 @@ provider:
       statements:
         - Effect: "Allow"
           Action:
-            - "dynamodb:PutItem"
-            - "dynamodb:Get*"
-            - "dynamodb:Scan*"
-            - "dynamodb:UpdateItem"
-            - "dynamodb:DeleteItem"
+            - dynamodb:DescribeTable
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
             
           Resource: 
             - { "Fn::GetAtt": ["StudentTable", "Arn"]}
@@ -110,9 +112,9 @@ resources:
       Type: AWS::DynamoDB::Table
       Properties:
         AttributeDefinitions:
-          - AttributeName: StudentID
+          - AttributeName: StudentId
             AttributeType: S
         BillingMode: PAY_PER_REQUEST
         KeySchema:
-          - AttributeName: StudentID
+          - AttributeName: StudentId
             KeyType: HASH
